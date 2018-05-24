@@ -450,10 +450,14 @@ def pythagorean_triples(n):
             for a in range(1, b):
                 if a*a + b*b == c*c:
                     l.append((a, b, c))
+
+    print(l)
     return l
 
 
 # ------------------------------------------------------------------------------
 
 def test_pythagorean_triples():
-    pass  # so far we do not test anything, check also test coverage
+    assert pythagorean_triples(5) == [(3, 4, 5)]
+    assert pythagorean_triples(18) == [(3, 4, 5), (6, 8, 10), (5, 12, 13), (9, 12, 15), (8, 15, 17)]
+    assert pythagorean_triples(4) == []
