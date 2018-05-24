@@ -322,12 +322,12 @@ def read_column(file_name, column_number):
     Reads column column_number from file file_name
     and returns the values as floats in a list.
     """
-    f = open(file_name, "r")
-    lines = f.readlines()
+    file = open(file_name, "r")
+    lines = file.readlines()
     result = []
     for x in lines:
         result.append(float(x.split()[column_number - 1]))
-    f.close()
+    file.close()
 
     return result
 
@@ -367,7 +367,18 @@ def character_statistics(file_name):
     Use the isalpha() method to figure out
     whether the character is in the alphabet.
     """
-    return None
+    content = open(file_name, "r").read()
+
+    char_stats = []
+    for c in content:
+        char = c.lower()
+        if char.isalpha():
+            stats = (char, content.count(char))
+            char_stats += [stats] if stats not in char_stats else []
+
+    char_stats.sort(key=lambda s: s[1])
+
+    return char_stats[-1][0], char_stats[0][0]
 
 
 def test_character_statistics():
