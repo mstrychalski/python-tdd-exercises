@@ -1,9 +1,12 @@
+import re
+
 
 def reverse_list(l):
     """
     Reverses order of elements in list l.
     """
-    return None
+
+    return l[::-1]
 
 
 def test_reverse_list():
@@ -16,7 +19,8 @@ def reverse_string(s):
     """
     Reverses order of characters in string s.
     """
-    return None
+
+    return s[::-1]
 
 
 def test_reverse_string():
@@ -30,7 +34,8 @@ def is_english_vowel(c):
     Returns True if c is an english vowel
     and False otherwise.
     """
-    return None
+    vowels = ['A', 'E', 'I', 'O', 'U', 'Y']
+    return c.upper() in vowels
 
 
 def test_is_english_vowel():
@@ -57,7 +62,11 @@ def count_num_vowels(s):
     """
     Returns the number of vowels in a string s.
     """
-    return None
+    count = 0
+    for c in s:
+        count += 1 if is_english_vowel(c) else 0
+
+    return count
 
 
 def test_count_num_vowels():
@@ -79,7 +88,14 @@ def histogram(l):
     """
     Converts a list of integers into a simple string histogram.
     """
-    return None
+    hashes = []
+    for count in l:
+        hash = ''
+        for i in range(count):
+            hash += '#'
+        hashes.append(hash)
+
+    return '\n'.join(hashes)
 
 
 def test_histogram():
@@ -93,7 +109,8 @@ def get_word_lengths(s):
     Returns a list of integers representing
     the word lengths in string s.
     """
-    return None
+
+    return [len(word) for word in s.split()]
 
 
 def test_get_word_lengths():
@@ -108,7 +125,11 @@ def find_longest_word(s):
     Returns the longest word in string s.
     In case there are several, return the first.
     """
-    return None
+    word_lengths = get_word_lengths(s)
+    word_list = s.split()
+    longest_index = word_lengths.index(sorted(word_lengths)[-1])
+
+    return word_list[longest_index]
 
 
 def test_find_longest_word():
@@ -125,7 +146,12 @@ def validate_dna(s):
     Return True if the DNA string only contains characters
     a, c, t, or g (lower or uppercase). False otherwise.
     """
-    return None
+    allowed_chars = ['A', 'C', 'T', 'G']
+    for c in s:
+        if c.upper() not in allowed_chars:
+            return False
+
+    return True
 
 
 def test_validate_dna():
@@ -142,7 +168,13 @@ def base_pair(c):
     of the base pair. If the base is not recognized,
     return 'unknown'.
     """
-    return None
+    bases = ['a', 't', 'c', 'g']
+    complement = ['t', 'a', 'g', 'c']
+
+    if c.lower() not in bases:
+        return 'unknown'
+
+    return complement[bases.index(c.lower())]
 
 
 def test_base_pair():
@@ -165,7 +197,7 @@ def transcribe_dna_to_rna(s):
     Return string s with each letter T replaced by U.
     Result is always uppercase.
     """
-    return None
+    return s.upper().replace('T', 'U')
 
 
 def test_transcribe_dna_to_rna():
@@ -180,7 +212,11 @@ def get_complement(s):
     Return the DNA complement in uppercase
     (A -> T, T-> A, C -> G, G-> C).
     """
-    return None
+    dna_complement = ''
+    for c in s:
+        dna_complement += base_pair(c)
+
+    return dna_complement.upper()
 
 
 def test_get_complement():
@@ -195,7 +231,8 @@ def get_reverse_complement(s):
     Return the reverse complement of string s
     (complement reversed in order).
     """
-    return None
+
+    return get_complement(s)[::-1]
 
 
 def test_get_reverse_complement():
@@ -209,7 +246,7 @@ def remove_substring(substring, string):
     """
     Returns string with all occurrences of substring removed.
     """
-    return None
+    return string.replace(substring, '')
 
 
 def test_remove_substring():
@@ -227,7 +264,7 @@ def get_position_indices(triplet, dna):
     in a DNA sequence. We start counting from 0
     and jump by 3 characters from one position to the next.
     """
-    return None
+    return [m.start() / 3 for m in re.finditer(triplet, dna)]
 
 
 def test_get_position_indices():
@@ -246,7 +283,14 @@ def get_3mer_usage_chart(s):
     The list is alphabetically sorted by the name
     of the 3-mer.
     """
-    return None
+    result = []
+    for i, c in enumerate(s):
+        three_mer = s[i:i+3]
+        if len(three_mer) == 3:
+            t = (three_mer, s.count(three_mer))
+            result += [t] if t not in result else []
+
+    return sorted(result)
 
 
 def test_get_3mer_usage_chart():
@@ -267,6 +311,7 @@ def test_get_3mer_usage_chart():
     result.append(('TAC', 1))
     result.append(('TAG', 1))
     result.append(('TTA', 2))
+
     assert get_3mer_usage_chart(s) == result
 
 
@@ -277,7 +322,14 @@ def read_column(file_name, column_number):
     Reads column column_number from file file_name
     and returns the values as floats in a list.
     """
-    return None
+    f = open(file_name, "r")
+    lines = f.readlines()
+    result = []
+    for x in lines:
+        result.append(float(x.split()[column_number - 1]))
+    f.close()
+
+    return result
 
 
 def test_read_column():
